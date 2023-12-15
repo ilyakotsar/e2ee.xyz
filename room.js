@@ -16,7 +16,6 @@ var intervalEnabled = true;
 const roomName = document.getElementById('room-name').value;
 const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
 
-
 function getRoomData() {
     axios({
         method: 'post',
@@ -69,7 +68,6 @@ function getRoomData() {
     });
 }
 
-
 function enterPrivateKey() {
     const privateKey = document.getElementById('private-key').value.trim();
     if (privateKey.length > 0) {
@@ -120,7 +118,6 @@ function enterPrivateKey() {
     }
 }
 
-
 function getNewMessages() {
     if (intervalEnabled) {
         axios({
@@ -154,7 +151,6 @@ function getNewMessages() {
         });
     }
 }
-
 
 function sendMessage() {
     if (encryptionKey) {
@@ -191,7 +187,6 @@ function sendMessage() {
         privateKeyModal.show();
     }
 }
-
 
 function displayMessage(message, user, text, datetime, mode) {
     const dt = new Date(datetime);
@@ -252,7 +247,6 @@ function displayMessage(message, user, text, datetime, mode) {
     document.getElementById('messages').innerHTML += x;
 }
 
-
 function changeName() {
     if (encryptionKey) {
         const eName = document.getElementById('encrypted-name').value.trim();
@@ -276,18 +270,15 @@ function changeName() {
     }
 }
 
-
 function encrypt(plaintext) {
     const ciphertext = CryptoJS.AES.encrypt(plaintext, encryptionKey, {iv: salt}).toString();
     return ciphertext
 }
 
-
 function decrypt(ciphertext) {
     const plaintext = CryptoJS.AES.decrypt(ciphertext, encryptionKey, {iv: salt}).toString(CryptoJS.enc.Utf8);
     return plaintext
 }
-
 
 document.querySelector('#message').onkeyup = (e) => {
     if (e.keyCode === 13) {
@@ -295,20 +286,17 @@ document.querySelector('#message').onkeyup = (e) => {
     }
 }
 
-
 document.querySelector('#private-key').onkeyup = (e) => {
     if (e.keyCode === 13) {
         document.getElementById('enter-private-key').click();
     }
 }
 
-
 window.onbeforeunload = () => {
     if (encryptionKey) {
         return '';
     }
 }
-
 
 getRoomData();
 setInterval(getNewMessages, 3000);
