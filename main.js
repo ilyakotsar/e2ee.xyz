@@ -25,7 +25,6 @@ function generateKeys() {
     document.getElementById('create-room-form').classList.remove('d-none');
 }
 
-
 function createRoom() {
     const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
     let url;
@@ -59,13 +58,11 @@ function createRoom() {
     });
 }
 
-
 function runDemo() {
     document.getElementById('demo-btn').innerHTML = '';
     document.getElementById('create-room-demo').classList.remove('d-none');
     createRoom();
 }
-
 
 function copyInput(btn, inputID, translatedCopy, translatedCopied) {
     const text = document.getElementById(inputID).value;
@@ -85,12 +82,10 @@ function copyInput(btn, inputID, translatedCopy, translatedCopied) {
     });
 }
 
-
 function copyMessage(id) {
     const text = document.getElementById(id).innerHTML;
     navigator.clipboard.writeText(text).then(() => {});
 }
-
 
 function switchPrivateKey(btn) {
     const privateKeyDisplay = document.getElementById('private-key-display');
@@ -106,7 +101,6 @@ function switchPrivateKey(btn) {
     }
 }
 
-
 function switchPassword(btn, input) {
     const password = document.getElementById(input);
     if (password.type === 'password') {
@@ -118,7 +112,6 @@ function switchPassword(btn, input) {
         btn.innerHTML = '<i class="bi bi-eye-slash"></i>';
     }
 }
-
 
 function switchTheme(btn) {
     const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
@@ -136,7 +129,6 @@ function switchTheme(btn) {
     });
 }
 
-
 function addSpinner(btn, form) {
     if (form) {
         const f = document.getElementById(form);
@@ -151,7 +143,6 @@ function addSpinner(btn, form) {
     }
 }
 
-
 function changeScreen() {
     const encrypted = document.getElementById('encrypted');
     const decrypted = document.getElementById('decrypted');
@@ -165,13 +156,11 @@ function changeScreen() {
     }
 }
 
-
 function formatDatetime(datetime) {
     const time = datetime.toLocaleTimeString('ru');
     const date = datetime.toLocaleDateString('ru');
     return `${time.slice(0, 5)} - ${date.slice(0, 5)}`;
 }
-
 
 function switchCheckbox(checkbox, btnID) {
     try {
