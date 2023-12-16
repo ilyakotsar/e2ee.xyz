@@ -173,3 +173,23 @@ function switchCheckbox(checkbox, btnID) {
     }
     catch (error) {}
 }
+
+if (window.location.pathname === '/') {
+    const now = new Date();
+    const formattedDatetime = formatDatetime(now);
+    const dt = document.getElementsByName('datetime');
+    for (let i = 0; i < dt.length; i++) {
+      dt[i].innerHTML = formattedDatetime;
+      dt[i].title = now.toString();
+    }
+    document.getElementById('encrypted').style.transform = 'translateY(-50%)';
+    document.getElementById('decrypted').style.transform = 'translateY(-150%)';
+    setTimeout(() => {
+      changeScreen();
+      setInterval(changeScreen, 4500);
+    }, 1500);
+}
+
+if (window.location.pathname.slice(0, 7) === '/create') {
+    createRoom();
+}
