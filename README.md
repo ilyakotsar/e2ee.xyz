@@ -1,1 +1,1 @@
-# e2ee.xyz
+# E2EE.xyz
