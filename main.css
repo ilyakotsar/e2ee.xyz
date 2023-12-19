@@ -1,20 +1,7 @@
 @font-face {
-    font-family: 'Roboto';
-    src: url('https://e2ee.xyz/static/fonts/Roboto-Light.ttf');
+    font-family: 'Arimo';
+    src: url('https://e2ee.xyz/static/fonts/Arimo-VariableFont_wght.ttf');
     font-style: normal;
-    font-weight: 300;
-}
-@font-face {
-    font-family: 'Roboto';
-    src: url('https://e2ee.xyz/static/fonts/Roboto-Regular.ttf');
-    font-style: normal;
-    font-weight: 400;
-}
-@font-face {
-    font-family: 'Roboto';
-    src: url('https://e2ee.xyz/static/fonts/Roboto-Medium.ttf');
-    font-style: normal;
-    font-weight: 500;
 }
 @font-face {
     font-family: 'Montserrat';
@@ -23,8 +10,9 @@
 }
 @font-face {
     font-family: 'Red Hat Mono';
-    src: url('https://e2ee.xyz/static/fonts/RedHatMono-VariableFont_wght.ttf');
+    src: url('https://e2ee.xyz/static/fonts/RedHatMono-Medium.ttf');
     font-style: normal;
+    font-weight: 500;
 }
 @font-face {
     font-family: 'Rationale';
@@ -126,13 +114,8 @@
         border-right: none !important;
     }
 }
-::selection {
-    -webkit-text-fill-color: #ffffff;
-    color: #ffffff;
-    background-color: var(--main-color);
-}
 body {
-    font-family: 'Roboto', system-ui, -apple-system, Arial, Helvetica, sans-serif;
+    font-family: 'Arimo', Arial, Helvetica, sans-serif;
     font-size: 16px;
     color: var(--color);
     background-color: var(--bg-body);
@@ -148,7 +131,7 @@ main {
     margin-top: 50px;
 }
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Montserrat', 'Segoe UI', Verdana, sans-serif;
     line-height: 1.4;
 }
 .mw-450 {
@@ -428,7 +411,6 @@ button.my-message:hover, button.other-message:hover {
 }
 .datetime {
     font-size: 12px;
-    font-weight: 300;
     color: var(--muted-color);
     margin-top: 2px;
 }
@@ -523,8 +505,4 @@ a {
 a:hover {
     color: var(--red);
     text-decoration-color: var(--red);
-}
-a:focus-visible, button:focus-visible {
-    outline: 2px dotted var(--main-color);
-    outline-offset: 1px;
 }
