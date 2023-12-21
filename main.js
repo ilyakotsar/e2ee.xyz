@@ -101,6 +101,19 @@ function switchPrivateKey(btn) {
     }
 }
 
+function switchUsername(btn) {
+    const usernameDisplay = document.getElementById('username-display');
+    const username = document.getElementById('username');
+    if (usernameDisplay.innerHTML.includes('*')) {
+        usernameDisplay.innerHTML = username.value;
+        btn.innerHTML = '<i class="bi bi-eye"></i>';
+    }
+    else {
+        usernameDisplay.innerHTML = '**********';
+        btn.innerHTML = '<i class="bi bi-eye-slash"></i>';
+    }
+}
+
 function switchPassword(btn, input) {
     const password = document.getElementById(input);
     if (password.type === 'password') {
@@ -123,7 +136,7 @@ function switchTheme(btn) {
         }
     }).then((res) => {
         if (res.data['theme']) {
-            document.body.className = res.data['theme'];
+            document.body.className = `${res.data['theme']}-theme`;
             btn.blur();
         }
     });
