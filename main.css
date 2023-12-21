@@ -35,7 +35,7 @@
     --red-hover: #e03759;
 }
 @media (prefers-color-scheme: light) {
-    .system {
+    .system-theme {
         --color: #080808;
         --muted-color: #3d3d3d;
         --bg-body: #f2f2f2;
@@ -46,7 +46,7 @@
         --border-color: #cfcfcf;
         --shadow-color: #aaaaaa50;
     }
-    .inverted {
+    .inverted-theme {
         --color: #ffffff;
         --muted-color: #b6b6b6;
         --bg-body: #0a0a0a;
@@ -56,10 +56,22 @@
         --bg-button-hover: #3a3a3a;
         --border-color: #1d1d1d;
         --shadow-color: #00000050;
+    }
+    .system-theme .switch-theme .bi-sun {
+        display: block;
+    }
+    .system-theme .switch-theme .bi-moon {
+        display: none;
+    }
+    .inverted-theme .switch-theme .bi-sun {
+        display: none;
+    }
+    .inverted-theme .switch-theme .bi-moon {
+        display: block;
     }
 }
 @media (prefers-color-scheme: dark) {
-    .system {
+    .system-theme {
         --color: #ffffff;
         --muted-color: #b6b6b6;
         --bg-body: #0a0a0a;
@@ -70,7 +82,7 @@
         --border-color: #1d1d1d;
         --shadow-color: #00000050;
     }
-    .inverted {
+    .inverted-theme {
         --color: #080808;
         --muted-color: #3d3d3d;
         --bg-body: #f2f2f2;
@@ -81,8 +93,20 @@
         --border-color: #cfcfcf;
         --shadow-color: #aaaaaa50;
     }
+    .system-theme .switch-theme .bi-sun {
+        display: none;
+    }
+    .system-theme .switch-theme .bi-moon {
+        display: block;
+    }
+    .inverted-theme .switch-theme .bi-sun {
+        display: block;
+    }
+    .inverted-theme .switch-theme .bi-moon {
+        display: none;
+    }
 }
-@media all and (min-width: 600px) {
+@media all and (min-width: 650px) {
     .desktop {
         display: block;
     }
@@ -90,7 +114,7 @@
         display: none !important;
     }
 }
-@media all and (max-width: 599px) {
+@media all and (max-width: 649px) {
     .desktop {
         display: none !important;
     }
@@ -214,7 +238,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .btn-base {
     font-weight: 500;
-    padding: 0 15px;
+    padding: 0 17px;
     height: 38px;
     border-radius: 9px;
     border: 1px solid transparent;
@@ -499,9 +523,18 @@ hr {
 .bg-card {
     background-color: var(--bg-card);
 }
-.avatar i {
-    color: var(--muted-color);
-    font-size: 60px;
+.avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 35px;
+    background-color: var(--color);
+}
+.avatar svg {
+    width: 68px;
+    height: 68px;
+    border-radius: 34px;
+    fill: currentColor;
+    color: var(--bg-card);
 }
 a {
     color: currentColor;
@@ -512,4 +545,7 @@ a {
 a:hover {
     color: var(--red);
     text-decoration-color: var(--red);
+}
+.bi-person {
+    transform: scale(1.2);
 }
