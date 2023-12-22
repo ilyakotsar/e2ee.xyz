@@ -1,18 +1,6 @@
 @font-face {
-    font-family: 'Roboto';
-    src: url('https://e2ee.xyz/static/fonts/Roboto-Regular.ttf');
-    font-style: normal;
-    font-weight: 400;
-}
-@font-face {
-    font-family: 'Roboto';
-    src: url('https://e2ee.xyz/static/fonts/Roboto-Medium.ttf');
-    font-style: normal;
-    font-weight: 500;
-}
-@font-face {
-    font-family: 'Montserrat';
-    src: url('https://e2ee.xyz/static/fonts/Montserrat-VariableFont_wght.ttf');
+    font-family: 'Inter';
+    src: url('https://e2ee.xyz/static/fonts/Inter-VariableFont_slnt,wght.ttf');
     font-style: normal;
 }
 @font-face {
@@ -146,8 +134,9 @@
     }
 }
 body {
-    font-family: 'Roboto', system-ui, -apple-system, Arial, Helvetica, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, Arial, Helvetica, sans-serif;
     font-size: 16px;
+    font-variant-ligatures: none;
     color: var(--color);
     background-color: var(--bg-body);
 }
@@ -162,7 +151,6 @@ main {
     margin-top: 50px;
 }
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', 'Segoe UI', Verdana, sans-serif;
     line-height: 1.4;
 }
 .mw-450 {
@@ -334,6 +322,7 @@ input, textarea {
     border-radius: 9px;
     box-sizing: border-box;
     outline: none;
+    font-variant-ligatures: none;
     transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 input {
@@ -347,7 +336,7 @@ input:hover, textarea:hover {
 }
 input:focus, textarea:focus {
     border-color: var(--main-color);
-    box-shadow: inset 0 0 0 1px var(--main-color);
+    box-shadow: 0 0 0 1px var(--main-color);
 }
 input:disabled, textarea:disabled {
     color: var(--muted-color);
@@ -441,6 +430,7 @@ button.my-message:hover, button.other-message:hover {
     margin-top: -50px;
 }
 .datetime {
+    font-weight: 300;
     font-size: 12px;
     color: var(--muted-color);
     margin-top: 2px;
@@ -484,6 +474,7 @@ hr {
     font-family: 'Red Hat Mono', monospace;
 }
 .title {
+    font-size: calc(1.5rem + 1.5vw);
     font-weight: 800;
     background: -webkit-linear-gradient(0deg, var(--color), var(--main-color));
     background-clip: text;
@@ -523,19 +514,6 @@ hr {
 .bg-card {
     background-color: var(--bg-card);
 }
-.avatar {
-    width: 70px;
-    height: 70px;
-    border-radius: 35px;
-    background-color: var(--color);
-}
-.avatar svg {
-    width: 68px;
-    height: 68px;
-    border-radius: 34px;
-    fill: currentColor;
-    color: var(--bg-card);
-}
 a {
     color: currentColor;
     text-decoration: 1px underline solid var(--main-color);
@@ -548,4 +526,7 @@ a:hover {
 }
 .bi-person {
     transform: scale(1.2);
+}
+.gray-50-filter {
+    filter: invert(53%) sepia(6%) saturate(0%) hue-rotate(246deg) brightness(93%) contrast(94%);
 }
