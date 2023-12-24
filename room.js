@@ -1,14 +1,16 @@
 var userID;
 var encryptedName;
+var myIV;
 var recipientEncryptedName;
+var recipientIV;
+var recipientPublicKey;
 var p;
 var salt;
-var keySize;
 var iterations;
-var recipientPublicKey;
 var messageIDList;
 var userIDList;
 var encryptedTextList;
+var ivList;
 var datetimeList;
 var lastDatetime;
 var encryptionKey;
@@ -27,19 +29,21 @@ function getRoomData() {
             getRoomData: true
         }
     }).then((res) => {
-        userID = res.data['userID']
-        encryptedName = res.data['encryptedName']
-        recipientEncryptedName = res.data['recipientEncryptedName']
-        p = res.data['p']
-        salt = CryptoJS.enc.Base64.parse(res.data['salt'])
-        keySize = parseInt(res.data['keySize'])
-        iterations = parseInt(res.data['iterations'])
-        recipientPublicKey = res.data['recipientPublicKey']
-        messageIDList = res.data['messageIDList']
-        userIDList = res.data['userIDList']
-        encryptedTextList = res.data['encryptedTextList']
-        datetimeList = res.data['datetimeList']
-        lastDatetime = res.data['lastDatetime']
+        userID = res.data['userID'];
+        encryptedName = res.data['encryptedName'];
+        myIV = res.data['myIV'];
+        recipientEncryptedName = res.data['recipientEncryptedName'];
+        recipientIV = res.data['recipientIV'];
+        recipientPublicKey = res.data['recipientPublicKey'];
+        p = res.data['p'];
+        salt = CryptoJS.enc.Base64.parse(res.data['salt']);
+        iterations = parseInt(res.data['iterations']);
+        messageIDList = res.data['messageIDList'];
+        userIDList = res.data['userIDList'];
+        encryptedTextList = res.data['encryptedTextList'];
+        ivList = res.data['ivList'];
+        datetimeList = res.data['datetimeList'];
+        lastDatetime = res.data['lastDatetime'];
         if (encryptedName) {
             document.getElementById('encrypted-name').value = encryptedName;
         }
@@ -72,13 +76,14 @@ function enterPrivateKey() {
     const privateKey = document.getElementById('private-key').value.trim();
     if (privateKey.length > 0) {
         intervalEnabled = false;
+        document.getElementById('enter-private-key').disabled = true;
         const x = document.getElementById('enter-private-key').innerHTML;
         document.getElementById('enter-private-key').innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>${x}`;
         setTimeout(function() {
             try {
                 const sharedSecretKey = bigInt(recipientPublicKey).modPow(privateKey, p).toString();
                 encryptionKey = CryptoJS.PBKDF2(sharedSecretKey, salt, {
-                    keySize: keySize,
+                    keySize: 256 / 32,
                     iterations: iterations
                 });
                 if (encryptedTextList.length > 0) {
@@ -86,7 +91,7 @@ function enterPrivateKey() {
                     for (let i = 0; i < encryptedTextList.length; i++) {
                         let plaintext;
                         try {
-                            plaintext = decrypt(encryptedTextList[i]);
+                            plaintext = decryptText(encryptedTextList[i], ivList[i]);
                         }
                         catch (error) {}
                         if (plaintext) {
@@ -98,10 +103,10 @@ function enterPrivateKey() {
                     }
                 }
                 if (encryptedName) {
-                    document.getElementById('encrypted-name').value = decrypt(encryptedName);
+                    document.getElementById('encrypted-name').value = decryptText(encryptedName, myIV);
                 }
                 if (recipientEncryptedName) {
-                    document.getElementById('recipient-encrypted-name').innerHTML = decrypt(recipientEncryptedName);
+                    document.getElementById('recipient-encrypted-name').innerHTML = decryptText(recipientEncryptedName, recipientIV);
                 }
                 const privateKeyModal = bootstrap.Modal.getInstance(document.getElementById('private-key-modal'));
                 privateKeyModal.hide();
@@ -110,12 +115,24 @@ function enterPrivateKey() {
             }
             catch (error) {}
             document.getElementById('enter-private-key').innerHTML = x;
+            document.getElementById('enter-private-key').disabled = false;
             intervalEnabled = true;
         }, 5);
     }
     else {
         document.getElementById('private-key').value = '';
     }
+}
+
+function encryptText(plaintext, iv) {
+    const ciphertext = CryptoJS.AES.encrypt(plaintext, encryptionKey, {iv: iv}).toString();
+    return ciphertext;
+}
+
+function decryptText(ciphertext, ivBase64) {
+    const iv = CryptoJS.enc.Base64.parse(ivBase64);
+    const plaintext = CryptoJS.AES.decrypt(ciphertext, encryptionKey, {iv: iv}).toString(CryptoJS.enc.Utf8);
+    return plaintext;
 }
 
 function getNewMessages() {
@@ -137,7 +154,7 @@ function getNewMessages() {
                     encryptedTextList.push(res.data['encryptedTextList'][i]);
                     datetimeList.push(res.data['datetimeList'][i]);
                     if (encryptionKey) {
-                        const plaintext = decrypt(res.data['encryptedTextList'][i]);
+                        const plaintext = decryptText(res.data['encryptedTextList'][i], res.data['ivList'][i]);
                         displayMessage(res.data['messageIDList'][i], res.data['userIDList'][i], plaintext, res.data['datetimeList'][i]);
                     }
                     else {
@@ -157,7 +174,8 @@ function sendMessage() {
         const message = document.getElementById('message').value.trim();
         if (message != '' && message.length < 3000) {
             intervalEnabled = false;
-            const ciphertext = encrypt(message);
+            const iv = CryptoJS.lib.WordArray.random(128 / 8);
+            const ciphertext = encryptText(message, iv);
             axios({
                 method: 'post',
                 url: `/rooms/${roomName}`,
@@ -165,7 +183,8 @@ function sendMessage() {
                     'X-CSRFToken': csrfToken
                 },
                 data: {
-                    ciphertext: ciphertext
+                    ciphertext: ciphertext,
+                    iv: iv.toString(CryptoJS.enc.Base64)
                 }
             }).then((res) => {
                 if (res.data['datetime']) {
@@ -183,7 +202,7 @@ function sendMessage() {
         }
     }
     else {
-        const privateKeyModal = new bootstrap.Modal(document.getElementById('private-key-modal')); 
+        const privateKeyModal = new bootstrap.Modal(document.getElementById('private-key-modal'));
         privateKeyModal.show();
     }
 }
@@ -251,7 +270,8 @@ function changeName() {
     if (encryptionKey) {
         const eName = document.getElementById('encrypted-name').value.trim();
         if (eName != '' && eName.length < 25) {
-            const ciphertext = encrypt(eName);
+            const iv = CryptoJS.lib.WordArray.random(128 / 8);
+            const ciphertext = encryptText(eName, iv);
             axios({
                 method: 'post',
                 url: `/rooms/${roomName}`,
@@ -259,7 +279,8 @@ function changeName() {
                     'X-CSRFToken': csrfToken
                 },
                 data: {
-                    setName: ciphertext
+                    setName: ciphertext,
+                    iv: iv.toString(CryptoJS.enc.Base64)
                 }
             }).then((res) => {
                 if (res.data['success']) {
@@ -268,16 +289,6 @@ function changeName() {
             });
         }
     }
-}
-
-function encrypt(plaintext) {
-    const ciphertext = CryptoJS.AES.encrypt(plaintext, encryptionKey, {iv: salt}).toString();
-    return ciphertext
-}
-
-function decrypt(ciphertext) {
-    const plaintext = CryptoJS.AES.decrypt(ciphertext, encryptionKey, {iv: salt}).toString(CryptoJS.enc.Utf8);
-    return plaintext
 }
 
 document.querySelector('#message').onkeyup = (e) => {
