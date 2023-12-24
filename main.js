@@ -1,6 +1,6 @@
 function generateKeys() {
-    const min = 280;
-    const max = 300;
+    const min = 100;
+    const max = 110;
     const privateKeyLength = Math.floor(Math.random() * (max - min) + min);
     let privateKey = '';
     for (let i = 0; i < privateKeyLength; i++) {
@@ -8,7 +8,7 @@ function generateKeys() {
         privateKey += digit.toString();
     }
     hiddenPrivateKey = '';
-    for (let i = 0; i < 150; i++) {
+    for (let i = 0; i < 50; i++) {
         hiddenPrivateKey += '●';
     }
     const g = document.getElementById('g').value;
@@ -146,11 +146,13 @@ function addSpinner(btn, form) {
     if (form) {
         const f = document.getElementById(form);
         f.onsubmit = () => {
+            btn.disabled = true;
             const x = btn.innerHTML;
             btn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>${x}`;
         }
     }
     else {
+        btn.disabled = true;
         const x = btn.innerHTML;
         btn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>${x}`;
     }
@@ -187,6 +189,28 @@ function switchCheckbox(checkbox, btnID) {
     catch (error) {}
 }
 
+function showAccessKey(btn) {
+    btn.disabled = true;
+    const x = btn.innerHTML;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>${x}`;
+    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+    axios({
+        method: 'post',
+        url: '/account',
+        headers: {
+            'X-CSRFToken': csrfToken
+        },
+        data: {
+            showAccessKey: true
+        }        
+    }).then((res) => {
+        if (res.data['accessKey']) {
+            document.getElementById('access-key-display').innerHTML = res.data['accessKey'];
+            btn.className = 'd-none';
+        }
+    });
+}
+
 if (window.location.pathname === '/') {
     const now = new Date();
     const formattedDatetime = formatDatetime(now);
@@ -195,8 +219,6 @@ if (window.location.pathname === '/') {
       dt[i].innerHTML = formattedDatetime;
       dt[i].title = now.toString();
     }
-    document.getElementById('encrypted').style.transform = 'translateY(-50%)';
-    document.getElementById('decrypted').style.transform = 'translateY(-150%)';
     setTimeout(() => {
       changeScreen();
       setInterval(changeScreen, 4500);
