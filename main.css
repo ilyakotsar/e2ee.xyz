@@ -351,7 +351,7 @@ label {
 }
 .form-check-input {
     background-color: var(--bg-card);
-    border: 1px solid var(--bg-button);
+    border: 2px solid var(--bg-button);
     padding: 0 !important;
     box-shadow: none !important;
     cursor: pointer;
