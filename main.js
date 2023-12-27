@@ -1,6 +1,6 @@
 function generateKeys() {
-    const min = 100;
-    const max = 110;
+    const min = 240;
+    const max = 250;
     const privateKeyLength = Math.floor(Math.random() * (max - min) + min);
     let privateKey = '';
     for (let i = 0; i < privateKeyLength; i++) {
@@ -9,7 +9,7 @@ function generateKeys() {
     }
     hiddenPrivateKey = '';
     for (let i = 0; i < 50; i++) {
-        hiddenPrivateKey += '●';
+        hiddenPrivateKey += '*';
     }
     const g = document.getElementById('g').value;
     const p = document.getElementById('p').value;
@@ -357,7 +357,7 @@ function switchPrivateKey(btn) {
     const privateKeyDisplay = document.getElementById('private-key-display');
     const privateKey = document.getElementById('private-key');
     const hiddenPrivateKey = document.getElementById('hidden-private-key');
-    if (privateKeyDisplay.value.includes('●')) {
+    if (privateKeyDisplay.value.includes('*')) {
         privateKeyDisplay.value = privateKey.value;
         btn.innerHTML = '<i class="bi bi-eye"></i>';
     }
